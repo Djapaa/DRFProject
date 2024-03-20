@@ -1,0 +1,923 @@
+openapi: 3.0.3
+info:
+  title: Blog API Project
+  version: 1.0.0
+  description: A sample blog to learn about DRF
+paths:
+  /api/v1/catalog/search/:
+    get:
+      operationId: catalog_search_list
+      description: Вывод каталога произведений и поиск по нему
+      parameters:
+      - in: query
+        name: age_rating
+        schema:
+          type: integer
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - html
+          - json
+      - in: query
+        name: genre
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
+      - in: query
+        name: issue_year_gte
+        schema:
+          type: integer
+      - in: query
+        name: issue_year_lte
+        schema:
+          type: integer
+      - in: query
+        name: status
+        schema:
+          type: integer
+      - in: query
+        name: tag
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
+      - in: query
+        name: type
+        schema:
+          type: integer
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CatalogSearchList'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CatalogSearchList'
+          description: ''
+  /api/v1/composition/:
+    post:
+      operationId: composition_create
+      description: '123'
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - html
+          - json
+      tags:
+      - composition
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CompositionCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompositionCreateUpdate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompositionCreateUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompositionCreateUpdate'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/CompositionCreateUpdate'
+          description: ''
+  /api/v1/composition/{id}/:
+    get:
+      operationId: composition_retrieve
+      description: '123'
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - html
+          - json
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this composition.
+        required: true
+      tags:
+      - composition
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompositionDetail'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/CompositionDetail'
+          description: ''
+    put:
+      operationId: composition_update
+      description: '123'
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - html
+          - json
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this composition.
+        required: true
+      tags:
+      - composition
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CompositionCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompositionCreateUpdate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompositionCreateUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompositionCreateUpdate'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/CompositionCreateUpdate'
+          description: ''
+    patch:
+      operationId: composition_partial_update
+      description: '123'
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - html
+          - json
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this composition.
+        required: true
+      tags:
+      - composition
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCompositionCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCompositionCreateUpdate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCompositionCreateUpdate'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompositionCreateUpdate'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/CompositionCreateUpdate'
+          description: ''
+  /api/v1/composition/{id}/chapters-list/:
+    get:
+      operationId: composition_chapters_list_list
+      description: Вывод всех глав произведения
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - html
+          - json
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - composition
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChapterList'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChapterList'
+          description: ''
+  /api/v1/composition/chapters/{id}/:
+    get:
+      operationId: composition_chapters_retrieve
+      description: Вывод детальной информации о главе
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - html
+          - json
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - composition
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChapterDetail'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ChapterDetail'
+          description: ''
+  /api/v1/composition/chapters/{id}/create/:
+    post:
+      operationId: composition_chapters_create_create
+      description: Вывод детальной информации о главе
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - html
+          - json
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - composition
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChapterDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChapterDetail'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChapterDetail'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChapterDetail'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ChapterDetail'
+          description: ''
+  /api/v1/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+components:
+  schemas:
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Имя автора
+          maxLength: 100
+      required:
+      - id
+      - name
+    CatalogSearchList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        title:
+          type: string
+          title: Название произведения
+          maxLength: 255
+        composition_image:
+          type: string
+          format: uri
+        type:
+          type: string
+        avg_rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,1})?$
+        dir:
+          type: string
+          readOnly: true
+      required:
+      - avg_rating
+      - composition_image
+      - dir
+      - id
+      - title
+      - type
+    ChapterDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        is_published:
+          type: boolean
+          default: false
+        number:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Номер главы
+        name:
+          type: string
+          nullable: true
+          title: Название главы
+        upload_date:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Дата загрузки
+        pub_date:
+          type: string
+          format: date-time
+          nullable: true
+        pages:
+          type: array
+          items:
+            $ref: '#/components/schemas/PageList'
+      required:
+      - id
+      - number
+      - pages
+      - upload_date
+    ChapterList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        is_published:
+          type: boolean
+          default: false
+        number:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Номер главы
+        name:
+          type: string
+          nullable: true
+          title: Название главы
+        upload_date:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Дата загрузки
+        pub_date:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - id
+      - number
+      - upload_date
+    CompositionCreateUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: Название произведения
+          maxLength: 255
+        english_title:
+          type: string
+          title: Название произведения на английском языке
+          maxLength: 255
+        another_name_title:
+          type: string
+          title: Другие названия
+          maxLength: 500
+        year_of_creations:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          default: 1980
+          title: Год выпуска произведения
+        description:
+          type: string
+          title: Описание произведения
+        composition_image:
+          type: string
+          format: uri
+          default: null
+        type:
+          type: integer
+          nullable: true
+        status:
+          type: integer
+          nullable: true
+        age_rating:
+          type: integer
+          nullable: true
+        tag:
+          type: array
+          items:
+            type: integer
+        genre:
+          type: array
+          items:
+            type: integer
+        author:
+          type: array
+          items:
+            type: integer
+      required:
+      - another_name_title
+      - english_title
+      - genre
+      - id
+      - tag
+      - title
+    CompositionDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tag:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/CompositionsType'
+          readOnly: true
+        genre:
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/CompositionsStatus'
+          readOnly: true
+        author:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+          readOnly: true
+        publishers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Publishers'
+          readOnly: true
+        age_rating:
+          allOf:
+          - $ref: '#/components/schemas/CompositionsAgeRating'
+          readOnly: true
+        count_rating:
+          type: integer
+        avg_rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,1})?$
+        total_in_bookmarks:
+          type: integer
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        title:
+          type: string
+          title: Название произведения
+          maxLength: 255
+        english_title:
+          type: string
+          title: Название произведения на английском языке
+          maxLength: 255
+        another_name_title:
+          type: string
+          title: Другие названия
+          maxLength: 500
+        year_of_creations:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          default: 1980
+          title: Год выпуска произведения
+        description:
+          type: string
+          title: Описание произведения
+        composition_image:
+          type: string
+          format: uri
+          default: null
+        view:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          default: 0
+      required:
+      - age_rating
+      - another_name_title
+      - author
+      - avg_rating
+      - count_rating
+      - english_title
+      - genre
+      - id
+      - publishers
+      - status
+      - tag
+      - title
+      - total_in_bookmarks
+      - type
+    CompositionsAgeRating:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+          title: Название возростного рейтинга
+          maxLength: 20
+      required:
+      - id
+    CompositionsStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название статуса
+          maxLength: 20
+      required:
+      - id
+      - name
+    CompositionsType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название типа
+          maxLength: 20
+      required:
+      - id
+      - name
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название жанра
+          maxLength: 50
+      required:
+      - id
+      - name
+    PageList:
+      type: object
+      properties:
+        number:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Номер страницы
+        image_page:
+          type: string
+          format: uri
+          title: Изображение страницы
+      required:
+      - image_page
+      - number
+    PatchedCompositionCreateUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: Название произведения
+          maxLength: 255
+        english_title:
+          type: string
+          title: Название произведения на английском языке
+          maxLength: 255
+        another_name_title:
+          type: string
+          title: Другие названия
+          maxLength: 500
+        year_of_creations:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          default: 1980
+          title: Год выпуска произведения
+        description:
+          type: string
+          title: Описание произведения
+        composition_image:
+          type: string
+          format: uri
+          default: null
+        type:
+          type: integer
+          nullable: true
+        status:
+          type: integer
+          nullable: true
+        age_rating:
+          type: integer
+          nullable: true
+        tag:
+          type: array
+          items:
+            type: integer
+        genre:
+          type: array
+          items:
+            type: integer
+        author:
+          type: array
+          items:
+            type: integer
+    Publishers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        avatar:
+          type: string
+          format: uri
+          default: null
+          title: Фото профиля
+          pattern: (?:jpg|png|jpeg)$
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          maxLength: 150
+      required:
+      - id
+      - username
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название Тега
+          maxLength: 50
+      required:
+      - id
+      - name
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

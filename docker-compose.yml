@@ -23,6 +23,33 @@ services:
     # комманда для запуска сервера через shell
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+      
+    # Виртуальное окружение сервиса
+    environment:
+    # ссылка на сервис database
+      - DB_HOST=database
+      - DB_NAME=main_db
+      - DB_USER=dbuser
+      - DB_PASS=pass
+
+    # depends_on позволяет установить зависимости одинх сервисов от других.
+    # В данном случае сначал должна запуститься база данных а потом web
+    depends_on:
+      - database
+
+  database:
+    image: postgres:14.6-alpine
+
+    #  при помощи этой команды будет сконфигурированна БД. ТАким образом мы связваем web сервис с database сервисом
+    # При помощи enviroment даются джанго права на базу постгресс
+    environment:
+      #Название базы
+      - POSTGRES_DB=main_db
+      # Пользователь который будет создан в базе и его пароль
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - ~/pgdata:/var/lib/postgresql/data
 
 
 
