@@ -11,7 +11,7 @@ from .models import LikeDislike
 
 
 class VotesView(APIView):
-    # permission_classes = [IsAuthenticated(),]
+    permission_classes = [IsAuthenticated,]
     model = None  # Модель данных - Статьи или Комментарии
     vote_type = None  # Тип комментария Like/Dislike
 

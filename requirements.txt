@@ -9,3 +9,4 @@ ipython
 drf-yasg
 drf-spectacular
 django-mptt
+djoser==2.2.2

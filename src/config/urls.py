@@ -23,10 +23,12 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-
 urlpatterns = [
 
     path('admin/', admin.site.urls),
+    path('api/v1/auth/rest/', include('rest_framework.urls')),
+    path('api/v1/auth/', include('djoser.urls')),
+    path('api/v1/auth/', include('djoser.urls.authtoken')),
     path('api/v1/', include('api.v1.composition.urls')),
     path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/v1/schema/swagger-ui/", SpectacularSwaggerView.as_view(
