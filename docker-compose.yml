@@ -71,6 +71,29 @@ services:
     volumes:
       - ./src:/src
 
+    links:
+      - redis
+
+    depends_on:
+      - database
+      - redis
+      - web
+
+  flower:
+    build:
+      context: .
+    hostname: flower
+    command: python -m celery -A config flower
+
+    volumes:
+      - ./src:/src
+
+    ports:
+      - "5555:5555"
+
+    links:
+      - redis
+
     depends_on:
       - database
       - redis
