@@ -24,4 +24,5 @@ urlpatterns = [
     path('votes/', include('api.v1.likedislike.urls')),
     path('activity/', include('api.v1.comment.urls')),
 
+
 ]

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'api.v1.chapter',
     'api.v1.likedislike',
     'api.v1.comment',
+    'api.v1.notification',
 
 ]
 
@@ -64,7 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_sqlprint_middleware.SqlPrintMiddleware',
+    # 'django_sqlprint_middleware.SqlPrintMiddleware',
 ]
 
 #  Модель пользователя
@@ -177,6 +178,6 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
-
+# Celery
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 # CELERY_RESULT_BACKEND = 'redis://redis:6379/0'

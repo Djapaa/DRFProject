@@ -5,6 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, mixins, viewsets
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, GenericAPIView
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
+from rest_framework.views import APIView
 
 from .filters import CatalogSearchFilter
 from .models import Composition
@@ -53,3 +54,5 @@ class CompositionView(mixins.CreateModelMixin,
         if self.action == 'retrieve':
             return [permissions.AllowAny(), ]
         return [permissions.IsAdminUser(), ]
+
+

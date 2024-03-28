@@ -33,6 +33,7 @@ class Chapter(models.Model):
         """
         return reverse('chapter', kwargs={'slug': self.composition.slug, 'chapter_number': self.numbers})
 
+
 class Page(models.Model):
     """ Модель страниц глав"""
     number = models.PositiveIntegerField('Номер страницы')
