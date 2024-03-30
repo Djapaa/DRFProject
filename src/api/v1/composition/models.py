@@ -141,8 +141,8 @@ class UserCompositionRelation(models.Model):
         ONE = 1, "Крайне плохо"
 
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    composition = models.ForeignKey(Composition, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmark_and_rating')
+    composition = models.ForeignKey(Composition, on_delete=models.CASCADE, related_name='bookmark_and_rating')
     bookmark = models.PositiveSmallIntegerField(choices=Bookmark.choices, null=True, blank=True)
     rating = models.PositiveSmallIntegerField(choices=Rating.choices, null=True, blank=True)
 

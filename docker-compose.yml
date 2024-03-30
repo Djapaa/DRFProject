@@ -79,6 +79,13 @@ services:
       - redis
       - web
 
+    environment:
+      # ссылка на сервис database
+      - DB_HOST=database
+      - DB_NAME=main_db
+      - DB_USER=dbuser
+      - DB_PASS=pass
+
   flower:
     build:
       context: .
@@ -100,8 +107,8 @@ services:
       - web
 
     environment:
-      #Название базы
-      - POSTGRES_DB=main_db
-      # Пользователь который будет создан в базе и его пароль
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=pass
+      # ссылка на сервис database
+      - DB_HOST=database
+      - DB_NAME=main_db
+      - DB_USER=dbuser
+      - DB_PASS=pass

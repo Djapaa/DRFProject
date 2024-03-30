@@ -1,13 +1,46 @@
+
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 
-from .serializers import BookmarkSerializer, RatingSerializer
+from .serializers import BookmarkEditSerializer, RatingEditSerializer, ChapterBookmarkSerializer
 from ..composition.models import UserCompositionRelation
+
+User = get_user_model()
 
 
 class BookmarkEditView(mixins.CreateModelMixin,
+                       mixins.ListModelMixin,
                        viewsets.GenericViewSet):
-    serializer_class = BookmarkSerializer
+    filter_backends = [DjangoFilterBackend]
+
+    filterset_fields = ['bookmark']
+
+    ordering_fields = ['id', ]
+
+    def get_queryset(self):
+        return UserCompositionRelation.objects.filter(user_id=self.get_object().id).select_related(
+            'composition'
+        ).only(
+            'id',
+            'composition__id',
+            'composition__title',
+            'composition__english_title',
+            'composition__composition_image',
+            'composition__slug',
+            'bookmark',
+            'rating',
+        )
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return BookmarkEditSerializer
+        return ChapterBookmarkSerializer
+
+    def get_object(self):
+        return get_object_or_404(User.objects.only('id'), pk=self.kwargs.get('pk'))
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data)
@@ -28,7 +61,7 @@ class BookmarkEditView(mixins.CreateModelMixin,
 
 class RatingEditView(mixins.CreateModelMixin,
                      viewsets.GenericViewSet):
-    serializer_class = RatingSerializer
+    serializer_class = RatingEditSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data)
