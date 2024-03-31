@@ -1,16 +1,15 @@
-import django_filters
-from django.db.models import Avg, Count
-from django.shortcuts import get_object_or_404
+from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, mixins, viewsets
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
-from rest_framework.views import APIView
+
 
 from .filters import CatalogSearchFilter
 from .models import Composition
 from .serializers import CatalogSearchListSerializer, CompositionDetailSerializer, \
     CompositionCreateUpdateSerializer
+from ..viewsets.paginators import TwentyObjectsSetPagination
 
 
 # Create your views here.
@@ -18,8 +17,11 @@ from .serializers import CatalogSearchListSerializer, CompositionDetailSerialize
 class SearchCatalogView(ListAPIView):
     """ Вывод каталога произведений и поиск по нему"""
     serializer_class = CatalogSearchListSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = CatalogSearchFilter
+    pagination_class = TwentyObjectsSetPagination
+    ordering_fields = ['created', 'total_votes', 'view', 'avg_rating']
+    ordering = ['-avg_rating']
 
     def get_queryset(self):
         return (Composition.objects.all().select_related('type')

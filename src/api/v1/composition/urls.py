@@ -7,12 +7,12 @@ from ..chapter import views as chapter_view
 router = DefaultRouter()
 router.register('composition', views.CompositionView, basename='composition')
 
-chapter_detail = chapter_view.ChapterView.as_view({
-    'get': 'retrieve',
-    'put': 'update',
-    'patch': 'partial_update',
-    'delete': 'destroy'
-})
+# chapter_detail = chapter_view.ChapterView.as_view({
+#     'get': 'retrieve',
+#     'put': 'update',
+#     'patch': 'partial_update',
+#     'delete': 'destroy'
+# })
 
 
 

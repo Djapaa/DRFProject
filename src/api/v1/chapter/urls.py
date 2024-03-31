@@ -15,8 +15,10 @@ chapter_detail = views.ChapterView.as_view({
 
 
 urlpatterns = [
+    path('chapters/last/', views.LastUpdatedChapterView.as_view(), name='last-chapters'),
     path('<int:pk>/chapters-list/', views.ChapterListView.as_view(), name='composition-chapters'),
     path('chapters/<int:pk>/', chapter_detail, name='chapter'),
     path('<int:composition_id>/chapters/create/', views.ChapterCreateView.as_view(), name='chapter-create'),
+
 
 ]

@@ -17,7 +17,7 @@ class CustomUserAdmin(UserAdmin):
         'avatar')
 
     fieldsets = (
-        (None, {'fields': ('email', 'is_staff', 'is_superuser')}),
+        (None, {'fields': ('email', 'is_staff', 'is_superuser', 'email_not')}),
         ('Personal info',
          {'fields': ('username', 'is_active', 'sex', 'descriptions', 'avatar', 'balance')}),
         ('Groups', {'fields': ('groups',)}),

@@ -5,7 +5,7 @@ from ..composition.models import UserCompositionRelation, Composition
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'avatar')
@@ -25,14 +25,14 @@ class RatingEditSerializer(BookmarkEditSerializer):
         fields = ('id', 'composition', 'rating')
 
 
-class CompositionDetailSerializer(serializers.ModelSerializer):
+class CompositionAccountsDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Composition
         fields = ('id', 'title', 'english_title', 'slug', 'composition_image')
 
 
 class ChapterBookmarkSerializer(serializers.ModelSerializer):
-    composition = CompositionDetailSerializer()
+    composition = CompositionAccountsDetailSerializer()
 
     class Meta:
         model = UserCompositionRelation

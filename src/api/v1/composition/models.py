@@ -60,6 +60,7 @@ class Composition(models.Model):
     # comments = GenericRelation('Comment', related_name='comments')
 
 
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.english_title)

@@ -12,6 +12,7 @@ from django.contrib.auth import get_user_model
 
 from .serializers import CommentUpdateSerializer, CommentSerializer
 from .models import Comment
+from ..viewsets.paginators import TwentyObjectsSetPagination
 from ..viewsets.permissions import IsOwner
 
 User = get_user_model()
@@ -29,9 +30,10 @@ class CommentView(mixins.CreateModelMixin,
     filter_backends = [OrderingFilter]
     ordering_fields = ['time_create', 'score']
     ordering = ['-time_create']
+    pagination_class = TwentyObjectsSetPagination
 
     def get_object(self):
-        return get_object_or_404(self.model.objects.only('id'), pk=self.kwargs['model_instance_pk'])
+        return get_object_or_404(self.model.objects.only('id'), pk=self.kwargs['pk'])
 
     def get_queryset(self):
         obj = self.get_object()

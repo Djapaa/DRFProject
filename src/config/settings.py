@@ -181,3 +181,15 @@ SPECTACULAR_SETTINGS = {
 # Celery
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+
+
+#SMTP settings mail.ru
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = "estebmmr@mail.ru"
+EMAIL_HOST_PASSWORD = "um4EzHuqibb2f4YHe47p"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+
+

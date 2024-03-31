@@ -73,6 +73,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     descriptions = models.CharField('О себе', max_length=500, null=True, blank=True)
 
+    email_not = models.BooleanField('Уведомления на почту', default=False)
+
     objects = CustomUserManager()
 
     EMAIL_FIELD = "email"

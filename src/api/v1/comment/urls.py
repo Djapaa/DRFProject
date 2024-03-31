@@ -24,7 +24,7 @@ comment_reply = views.CommentReplyView.as_view(
 )
 
 urlpatterns = [
-    path('<int:model_instance_pk>/comments/', comment_list_add, name='composition-comments-get-or-add'),
+    path('composition/<int:pk>/comments/', comment_list_add, name='composition-comments-get-or-add'),
     path('comments/<int:pk>/', comment_update, name='composition-comments-update'),
     path('comments/<int:pk>/reply/', comment_reply, name='comment-reply')
 ]
