@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 
 from .serializers import BookmarkEditSerializer, RatingEditSerializer, ChapterBookmarkSerializer
-from ..composition.models import UserCompositionRelation
+from ..composition.models import UserCompositionRelation, Composition
 
 User = get_user_model()
 
@@ -19,6 +19,10 @@ class BookmarkEditView(mixins.CreateModelMixin,
     filterset_fields = ['bookmark']
 
     ordering_fields = ['id', ]
+
+
+    def get_object(self):
+        return get_object_or_404(User.objects.only('id'), pk=self.kwargs.get('pk'))
 
     def get_queryset(self):
         return UserCompositionRelation.objects.filter(user_id=self.get_object().id).select_related(
@@ -39,15 +43,14 @@ class BookmarkEditView(mixins.CreateModelMixin,
             return BookmarkEditSerializer
         return ChapterBookmarkSerializer
 
-    def get_object(self):
-        return get_object_or_404(User.objects.only('id'), pk=self.kwargs.get('pk'))
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
+        composition = get_object_or_404(Composition, pk=serializer.validated_data.get('composition'))
+
         instance, _ = UserCompositionRelation.objects.get_or_create(user=self.request.user,
-                                                                    composition_id=serializer.validated_data.get(
-                                                                        'composition'))
+                                                                    composition=composition)
         instance.bookmark = serializer.validated_data.get('bookmark')
         instance.save()
 
@@ -66,9 +69,9 @@ class RatingEditView(mixins.CreateModelMixin,
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
+        composition = get_object_or_404(Composition, pk=serializer.validated_data.get('composition'))
         instance, _ = UserCompositionRelation.objects.get_or_create(user=self.request.user,
-                                                                    composition_id=serializer.validated_data.get(
-                                                                        'composition'))
+                                                                    composition=composition)
         instance.rating = serializer.validated_data.get('rating')
         instance.save()
 

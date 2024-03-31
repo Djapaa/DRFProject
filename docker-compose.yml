@@ -86,6 +86,32 @@ services:
       - DB_USER=dbuser
       - DB_PASS=pass
 
+  celery-beat:
+    restart: always
+    build:
+      context: .
+    container_name: celery-beat
+
+    command: python -m celery -A config beat -l INFO
+
+    volumes:
+      - ./src:/src
+
+    links:
+      - redis
+
+    depends_on:
+      - database
+      - redis
+      - web
+
+    environment:
+      # ссылка на сервис database
+      - DB_HOST=database
+      - DB_NAME=main_db
+      - DB_USER=dbuser
+      - DB_PASS=pass
+
   flower:
     build:
       context: .

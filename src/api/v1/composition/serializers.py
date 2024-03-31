@@ -71,9 +71,9 @@ class CompositionDetailSerializer(serializers.ModelSerializer):
     publishers = PublishersSerializer(many=True, read_only=True)
 
     age_rating = CompositionsAgeRatingSerializer(read_only=True)
-    count_rating = serializers.IntegerField()
-    avg_rating = serializers.DecimalField(max_digits=3, decimal_places=1)
-    total_in_bookmarks = serializers.IntegerField()
+    count_rating = serializers.IntegerField(read_only=True)
+    avg_rating = serializers.DecimalField(max_digits=3, decimal_places=1, read_only=True)
+    total_in_bookmarks = serializers.IntegerField(read_only=True)
 
 
     class Meta:

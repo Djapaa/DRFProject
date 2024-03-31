@@ -1,3 +1,4 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 
 from django.contrib.contenttypes.fields import GenericRelation
@@ -21,7 +22,7 @@ class Composition(models.Model):
     )
 
     """ Модель произведения(манги, манхвы...)"""
-    slug = models.SlugField(max_length=255, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     title = models.CharField('Название произведения', max_length=255)
     english_title = models.CharField('Название произведения на английском языке', max_length=255)
     another_name_title = models.CharField('Другие названия', max_length=500)
@@ -34,7 +35,8 @@ class Composition(models.Model):
 
     description = models.TextField('Описание произведения', blank=True)
     composition_image = models.ImageField(upload_to=get_path_upload_title,
-                                          default='composition_image/default_composition_image.jpeg')
+                                          default='composition_image/default_composition_image.jpeg',
+                                          validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png', 'jpeg'])])
 
     type = models.ForeignKey('CompositionsType', on_delete=models.SET_NULL, null=True)
     status = models.ForeignKey('CompositionsStatus', on_delete=models.SET_NULL, null=True)
@@ -48,6 +50,12 @@ class Composition(models.Model):
     view = models.PositiveIntegerField(default=0) # ЗАТЫЧКА ПОД ПРОСМОТРЫ СТРАНИЦЫ, ПЕРЕДЕЛАТЬ ПОД УНИКАЛЬНЫЕ ПРОСМОТРЫ ПРИ ПОМОЩИ IP USER'A
 
     readers = models.ManyToManyField(User, through='UserCompositionRelation', related_name='ratings_and_bookmarks') # Связь для рейтинга и закладок к Произведению
+
+    count_rating = models.IntegerField('Количество голосов рейтинга', default=0)
+    avg_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+    count_bookmarks = models.IntegerField('Количество в закладках у пользователей', default=0)
+    total_votes = models.IntegerField('Количество лайков на всех главах', default=0)
+
 
     # comments = GenericRelation('Comment', related_name='comments')
 

@@ -22,8 +22,8 @@ class SearchCatalogView(ListAPIView):
     filterset_class = CatalogSearchFilter
 
     def get_queryset(self):
-        return (Composition.objects.all().annotate(avg_rating=Avg('usercompositionrelation__rating'))
-                .select_related('type').only('type__name', 'id', 'slug', 'title', 'composition_image'))
+        return (Composition.objects.all().select_related('type')
+                .only('type__name', 'id', 'slug', 'title', 'composition_image', 'avg_rating'))
 
 
 class CompositionView(mixins.CreateModelMixin,
@@ -34,16 +34,17 @@ class CompositionView(mixins.CreateModelMixin,
     parser_classes = (FormParser, MultiPartParser, JSONParser)
 
     def get_queryset(self):
-        return Composition.objects.all().annotate(
-            count_rating=Count('usercompositionrelation__rating', distinct=True),
-            avg_rating=Avg('usercompositionrelation__rating'),
-            total_in_bookmarks=Count('usercompositionrelation__bookmark', distinct=True)
-        ).select_related('status',
-                         'age_rating',
-                         'type').prefetch_related('genre',
-                                                  'author',
-                                                  'publishers',
-                                                  'tag')
+        return Composition.objects.all(
+        ).select_related(
+            'status',
+            'age_rating',
+            'type'
+        ).prefetch_related(
+            'genre',
+            'author',
+            'publishers',
+            'tag'
+        )
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -54,5 +55,3 @@ class CompositionView(mixins.CreateModelMixin,
         if self.action == 'retrieve':
             return [permissions.AllowAny(), ]
         return [permissions.IsAdminUser(), ]
-
-
