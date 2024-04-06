@@ -13,3 +13,4 @@ djoser==2.2.2
 celery[redis]==5.2.7
 redis==3.5
 flower==1.2.0
+python-dotenv==1.0.1

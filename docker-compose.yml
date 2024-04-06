@@ -26,7 +26,6 @@ services:
       
     # Виртуальное окружение сервиса
     environment:
-    # ссылка на сервис database
       - DB_HOST=database
       - DB_NAME=main_db
       - DB_USER=dbuser
