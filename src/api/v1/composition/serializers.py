@@ -91,4 +91,8 @@ class CompositionCreateUpdateSerializer(serializers.ModelSerializer):
             'publishers',
             'view',
             'readers',
+            'total_votes',
+            'avg_rating',
+            'count_bookmarks',
+            'count_rating',
         )

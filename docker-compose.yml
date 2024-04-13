@@ -25,22 +25,22 @@ services:
       sh -c "python manage.py runserver 0.0.0.0:8000"
       
     # Виртуальное окружение сервиса
-    environment:
-      - DB_HOST=database
-      - DB_NAME=main_db
-      - DB_USER=dbuser
-      - DB_PASS=pass
 
     # depends_on позволяет установить зависимости одинх сервисов от других.
     # В данном случае сначал должна запуститься база данных а потом web
     depends_on:
       - database
+    env_file:
+      - .env
 
   database:
     image: postgres:14.6-alpine
 
     #  при помощи этой команды будет сконфигурированна БД. ТАким образом мы связваем web сервис с database сервисом
     # При помощи enviroment даются джанго права на базу постгресс
+
+
+
     environment:
       #Название базы
       - POSTGRES_DB=main_db
@@ -49,6 +49,7 @@ services:
       - POSTGRES_PASSWORD=pass
     volumes:
       - ~/pgdata:/var/lib/postgresql/data
+
 
   redis:
     image: redis:7.0.5-alpine
@@ -78,12 +79,8 @@ services:
       - redis
       - web
 
-    environment:
-      # ссылка на сервис database
-      - DB_HOST=database
-      - DB_NAME=main_db
-      - DB_USER=dbuser
-      - DB_PASS=pass
+    env_file:
+      - .env
 
   celery-beat:
     restart: always
@@ -104,12 +101,8 @@ services:
       - redis
       - web
 
-    environment:
-      # ссылка на сервис database
-      - DB_HOST=database
-      - DB_NAME=main_db
-      - DB_USER=dbuser
-      - DB_PASS=pass
+    env_file:
+      - .env
 
   flower:
     build:
@@ -131,9 +124,5 @@ services:
       - redis
       - web
 
-    environment:
-      # ссылка на сервис database
-      - DB_HOST=database
-      - DB_NAME=main_db
-      - DB_USER=dbuser
-      - DB_PASS=pass
+    env_file:
+      - .env
